@@ -68,7 +68,8 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"src", OnAttrSrc)
             ATTR_SIZE(L"maxSize", _maxSize, TRUE)
-            SOUI_ATTRS_END()
+			ATTR_BOOL(L"round", _isRound,TRUE)
+        SOUI_ATTRS_END()
 
     protected:
 

@@ -5,7 +5,6 @@
           name="lv_search_result"
           headHeight="0"
           focuable="0"
-          sbWid="10"
           sbSkin="skin_vscroll"
           colorBkgnd="rgb(220,224,228)"
           sbWid="8">
