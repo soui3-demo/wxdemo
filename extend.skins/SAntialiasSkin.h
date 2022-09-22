@@ -35,7 +35,7 @@ namespace SOUI
         int GetFrameCount();
         long GetFrameDelay(int frame = -1);
         void ActiveNextFrame();
-        Gdiplus::Bitmap* SelectActiveFrame(int frame);
+        Gdiplus::Bitmap* SelectActiveFrame(int frame) const;
         void AddFrame(LPCWSTR pszFileName, int delay);
         int  LoadFromFile(LPCTSTR pszFileName);
         int  LoadFromMemory(LPVOID pBits, size_t szData);
@@ -51,7 +51,7 @@ namespace SOUI
 
     protected:
 
-        void    ReleaseImageWhileBuffReady();
+        void    ReleaseImageWhileBuffReady() const;
         BOOL    RoundBitmap(Gdiplus::Bitmap*& pBitmap);
         BOOL    SetBitmapRoundCorner(Gdiplus::Bitmap*& pBitmap);
         BOOL    ResizeBitmap(Gdiplus::Bitmap*& pBitmap, int width, int height);
@@ -62,8 +62,8 @@ namespace SOUI
         LRESULT OnAttrSrc(const SStringW &strValue, BOOL bLoading);
         int     LoadFromGdipImage(Gdiplus::Bitmap*& pImg);
         void    LoadFrameInfos(Gdiplus::Bitmap * pImage);
-        int     GetInterpolationMode(float fScaling);
-        void    _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState, BYTE byAlpha = 0xFF);
+        int     GetInterpolationMode(float fScaling) const;
+        void    _DrawByIndex(IRenderTarget *pRT, LPCRECT rcDraw, int index, BYTE byAlpha = 0xFF) const;
 
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"src", OnAttrSrc)
@@ -85,10 +85,10 @@ namespace SOUI
 
         typedef std::map<int, FrameInfo> FrameMap;
 
-        Gdiplus::Bitmap *   _pImage;        // 原始图片，当里面的图片都保存到缓存时被释放
-        FrameMap            _frames;        // 图片缓存
+        mutable Gdiplus::Bitmap *   _pImage;        // 原始图片，当里面的图片都保存到缓存时被释放
+        mutable FrameMap            _frames;        // 图片缓存
         int                 _frameCount;
-        int                 _currentFrame;
+        mutable int                 _currentFrame;
         CSize               _skinSize;
         CSize               _maxSize;
         BOOL                _isRound;

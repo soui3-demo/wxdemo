@@ -163,7 +163,7 @@ namespace SOUI
 
         virtual BOOL CreateCaret(HBITMAP pBmp, int nWid, int nHeight);
         virtual void SetCaretPos(int x, int y);
-
+		virtual void OnScaleChanged(int nScale);
         //
         // internal helpers
         //

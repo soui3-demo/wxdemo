@@ -28,9 +28,9 @@ void SButtonEx::DrawSkin(ISkinObj * pSkin, IRenderTarget *pRT)
 
     if (m_byAlphaAni == 0xFF)
     {//不在动画过程中
-        pSkin->Draw(
+        pSkin->DrawByState(
             pRT, rcClient,
-            IIF_STATE4(GetState(), 0, 1, 2, 3)
+            GetState()
         );
     }
     else
@@ -39,14 +39,14 @@ void SButtonEx::DrawSkin(ISkinObj * pSkin, IRenderTarget *pRT)
         if (GetState()&WndState_Hover)
         {
             //get hover
-            pSkin->Draw(pRT, rcClient, 0, pSkin->GetAlpha());
-            pSkin->Draw(pRT, rcClient, 1, byNewAlpha);
+            pSkin->DrawByIndex(pRT, rcClient, 0, pSkin->GetAlpha());
+            pSkin->DrawByIndex(pRT, rcClient, 1, byNewAlpha);
         }
         else
         {
             //lose hover
-            pSkin->Draw(pRT, rcClient, 0, pSkin->GetAlpha());
-            pSkin->Draw(pRT, rcClient, 1, pSkin->GetAlpha() - byNewAlpha);
+            pSkin->DrawByIndex(pRT, rcClient, 0, pSkin->GetAlpha());
+            pSkin->DrawByIndex(pRT, rcClient, 1, pSkin->GetAlpha() - byNewAlpha);
         }
     }
 }

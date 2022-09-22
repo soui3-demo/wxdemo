@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interface/render-i.h>
+#include <interface/srender-i.h>
 namespace SOUI
 {
     class SAniImgFrame
@@ -39,7 +39,7 @@ namespace SOUI
         * @return   SIZE -- Í¼Æ¬´óÐ¡
         * Describe  
         */    
-        virtual SIZE GetSkinSize()
+        virtual SIZE GetSkinSize() const override
         {
             SIZE sz={0};
             if(m_nFrames>0 && m_pFrames)
@@ -104,7 +104,7 @@ namespace SOUI
         * @return   void
         * Describe  
         */    
-        void SelectActiveFrame(int iFrame)
+        void SelectActiveFrame(int iFrame) const
         {
             if(m_nFrames>1 && iFrame<m_nFrames)
             {
@@ -126,7 +126,7 @@ namespace SOUI
         * @return   void
         * Describe  
         */    
-        virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF)
+        virtual void _DrawByIndex(IRenderTarget *pRT, LPCRECT rcDraw, int dwState,BYTE byAlpha=0xFF) const
         {
             if(m_nFrames == 0 || !m_pFrames) return;
             if(dwState!=-1) SelectActiveFrame(dwState);
@@ -135,7 +135,7 @@ namespace SOUI
         }
 
         int m_nFrames;
-        int m_iFrame;
+        mutable int m_iFrame;
 
         SAniImgFrame * m_pFrames;
     };

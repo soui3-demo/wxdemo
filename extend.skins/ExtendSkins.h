@@ -26,7 +26,7 @@ namespace SOUI
         void SetColors(COLORREF cr[4]);
 
     protected:
-        virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState, BYTE byAlpha);
+        virtual void _DrawByIndex(IRenderTarget *pRT, LPCRECT rcDraw, int dwState, BYTE byAlpha) const;
         HRESULT      OnAttrMask(const SStringW & strValue, BOOL bLoading);
         void         MakeCacheApha();
 

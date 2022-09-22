@@ -3,8 +3,8 @@
 #include <GdiPlus.h>
 #include "SAntialiasSkin.h"
 #include <helper/SplitString.h>
-#include <interface/imgdecoder-i.h>
-#include <interface/render-i.h>
+#include <interface/simgdecoder-i.h>
+#include <interface/srender-i.h>
 
 #include "../utils.h"
 using namespace Gdiplus;
@@ -411,7 +411,7 @@ namespace SOUI
      * Remarks:
      *
      */
-    void SAntialiasSkin::ReleaseImageWhileBuffReady()
+    void SAntialiasSkin::ReleaseImageWhileBuffReady() const
     {
         if (!_pImage)
         {
@@ -434,7 +434,7 @@ namespace SOUI
         }
     }
 
-    Gdiplus::Bitmap* SAntialiasSkin::SelectActiveFrame(int frame)
+    Gdiplus::Bitmap* SAntialiasSkin::SelectActiveFrame(int frame) const
     {
         if (_frameCount > 1 && frame < _frameCount)
         {
@@ -512,7 +512,7 @@ namespace SOUI
         _frames[_frameCount++] = frame;
     }
 
-    int SAntialiasSkin::GetInterpolationMode(float fScaling)
+    int SAntialiasSkin::GetInterpolationMode(float fScaling) const
     {
         if (fScaling > 0.9f)
         {
@@ -533,9 +533,9 @@ namespace SOUI
         return InterpolationModeNearestNeighbor;
     }
 
-    void SAntialiasSkin::_Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState, BYTE byAlpha)
+    void SAntialiasSkin::_DrawByIndex(IRenderTarget *pRT, LPCRECT rcDraw, int index, BYTE byAlpha) const
     {
-        Gdiplus::Bitmap* pFrame = SelectActiveFrame(dwState);
+        Gdiplus::Bitmap* pFrame = SelectActiveFrame(index);
         if (!pFrame)
         {
             return;

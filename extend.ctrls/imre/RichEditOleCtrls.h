@@ -1,3 +1,4 @@
+
 // ------------------------------------------------------------------------------
 //
 // RichEditOleCtrls.h : interface of the RichEditOleCtrls class
@@ -12,7 +13,6 @@
 // - @人消息
 //
 // ------------------------------------------------------------------------------
-
 
 #pragma once
 #include "RichEditOleBase.h"
@@ -101,113 +101,71 @@ namespace SOUI
         BOOL            _showMagnifier;
     };
 
-	//-------------------------------------------------------------------------------
-	//
-	//	RichEditAudioOle
-	//
-	//-------------------------------------------------------------------------------
-	extern "C" const GUID IID_AudioOleCtrl;
-	class RichEditAudioOle : public RichEditOleBase
-	{
-		DECLARE_REOBJ(RichEditAudioOle, L"audio")
-	public:
-		enum AudioPlayFlag
-		{
-			AUDIO_PLAY_NO = 0,
-			AUDIO_PLAY_PLAYING,
-			AUDIO_PLAY_PLAYFINISHED,
-		};
-
-		RichEditAudioOle();
-		~RichEditAudioOle();
-		BOOL InitOleWindow(IRichEditObjHost* pHost);
-
-	private:
-		int			_state;
-		SIZE        _maxSize;
-		SStringW	_audio_duration;
-		SStringW	_audio_url;
-		SStringW	_audio_layout;
-		SStringW	_audio_isplayed;
-	};
-
     // ------------------------------------------------------------------------------
     //
     // RichEditFileOle
     //
     // ------------------------------------------------------------------------------
-	extern "C" const GUID IID_FileOleCtrl;
+    extern "C" const GUID IID_FileOleCtrl;
 
-	class RichEditFileOle : public RichEditOleBase
-	{
-		DECLARE_REOBJ(RichEditFileOle, L"file")
+    class RichEditFileOle : public RichEditOleBase
+    {
+        DECLARE_REOBJ(RichEditFileOle, L"file")
 
-	public:
+    public:
 
-		enum LinkFlag
-		{
-			LINK_DOWNLOAD = 0x0001,	//下载
-			LINK_SAVE = 0x0002,   // 保存按钮
-			LINK_SAVEAS = 0x0004,   // 另存为按钮
-			LINK_CANCEL = 0x0008,   // 取消传输按钮
-			LINK_OPEN_FILE = 0x0010,   // 打开文件按钮
-			LINK_OPEN_DIR = 0x0020,   // 打开文件所在文件夹按钮
-			LINK_CONTINUE = 0x0040,   // 继续传输按钮
-			LINK_FORWARD = 0x0080,   //  转发
-		};
+        enum LinkFlag
+        {
+            LINK_SAVE = 0x0001,   // 保存按钮
+            LINK_SAVEAS = 0x0002,   // 另存为按钮
+            LINK_CANCEL = 0x0004,   // 取消传输按钮
+            LINK_OPEN_FILE = 0x0008,   // 打开文件按钮
+            LINK_OPEN_DIR = 0x0010,   // 打开文件所在文件夹按钮
+            LINK_CONTINUE = 0x0020,   // 继续传输按钮
+            LINK_FORWARD = 0x0040,   //  转发
+        };
 
-		static SStringW MakeFormattedText(
-			const SStringW& filePath,
-			const SStringW& fileState,
-			__int64 fileSize,
-			int visibleLinks,
-			const SStringW& fileSuffix);
+        static SStringW MakeFormattedText(
+            const SStringW& filePath,
+            const SStringW& fileState,
+            __int64 fileSize,
+            int visibleLinks);
 
-		RichEditFileOle();
-		~RichEditFileOle();
+        RichEditFileOle();
+        ~RichEditFileOle();
 
-		virtual BOOL InitOleWindow(IRichEditObjHost* pHost);
+        virtual BOOL InitOleWindow(IRichEditObjHost* pHost);
 
-		void SetFilePath(const SStringW& path);
-		void SetFileLinksVisible(int links);
-		void SetFileSize(__int64 size, BOOL requestLayout = TRUE);
-		void SetFileStateString(const SStringW& str);
-		SStringW GetFilePath();
-		SStringW GetFileName();
-		__int64 GetFileSize();
-		SStringW GetFileSuffix();
-		void SetFileSuffix(const SStringW& suffix);
-		void SetFileUrl(const SStringW& url);
-		SStringW GetFileUrl();
-		SStringW GetFileOLeId(){return GetId();}
+        void SetFilePath(const SStringW& path);
+        void SetFileLinksVisible(int links);
+        void SetFileSize(__int64 size, BOOL requestLayout = TRUE);
+        void SetFileStateString(const SStringW& str);
+        SStringW GetFilePath();
+        SStringW GetFileName();
+        __int64 GetFileSize();
 
-	protected:
+    protected:
 
-		bool OnLinkClicked(SOUI::EventArgs *pEvt);
-		bool OnFileNameClicked(SOUI::EventArgs* pEvt);
+        bool OnLinkClicked(SOUI::EventArgs *pEvt);
 
-		SOUI_ATTRS_BEGIN()
-			ATTR_STRINGW(L"file-path", _filePath, FALSE)
-			ATTR_STRINGW(L"file-size", _fileSize, FALSE)
-			ATTR_STRINGW(L"file-state", _fileState, FALSE)
-			ATTR_INT(L"links", _links, FALSE)
-			ATTR_STRINGW(L"file-suffix", _fileSuffix, FALSE)
-			ATTR_STRINGW(L"file-url", _fileUrl, FALSE)
-			SOUI_ATTRS_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW(L"file-path", _filePath, FALSE)
+            ATTR_STRINGW(L"file-size", _fileSize, FALSE)
+            ATTR_STRINGW(L"file-state", _fileState, FALSE)
+            ATTR_INT(L"links", _links, FALSE)
+            SOUI_ATTRS_END()
 
-			SStringW GetSizeBeautyString(unsigned long long size);
+            SStringW GetSizeBeautyString(unsigned long long size);
 
-	private:
+    private:
 
-		SStringW _filePath;         // 文件路径
-		SStringW _fileName;         // 文件名
-		SStringW _fileSize;         // 文件尺寸
-		SStringW _fileState;        // 文件状态
-		__int64  _fileSizeBytes;    // 整形的文件大小
-		int      _links;            // 可见按钮的标记，见LinkFlag
-		SStringW _fileSuffix;
-		SStringW _fileUrl;
-	};
+        SStringW _filePath;         // 文件路径
+        SStringW _fileName;         // 文件名
+        SStringW _fileSize;         // 文件尺寸
+        SStringW _fileState;        // 文件状态
+        __int64  _fileSizeBytes;    // 整形的文件大小
+        int      _links;            // 可见按钮的标记，见LinkFlag
+    };
 
     //
     // RichEditFileOle inlines
@@ -238,9 +196,9 @@ namespace SOUI
 
         enum FetchMoreState
         {
-            REFM_STATE_NORMAL,  // 姝ｅ父鐘舵�侊紝鏄剧ず鑾峰彇鏇村
-            REFM_STATE_LOADING, // 姝ｅ湪鍔犺浇鐘舵�侊紝鏄剧ず杞湀鍦?
-            REFM_STATE_END,     // 鏄剧ず鏇村娑堟伅璇峰湪鍘嗗彶璁板綍涓煡璇?
+            REFM_STATE_NORMAL,  // 正常状态，显示获取更多
+            REFM_STATE_LOADING, // 正在加载状态，显示转圈圈
+            REFM_STATE_END,     // 显示更多消息请在历史记录中查询
         };
 
         RichEditFetchMoreOle();
@@ -380,5 +338,111 @@ namespace SOUI
         SStringW _filePath;
         SStringW _font;
     };
+
+	//-------------------------------------------------------------------------------
+	//
+	// RichEditAudioOle
+	//
+	//-------------------------------------------------------------------------------
+	extern "C" const GUID IID_AudioOleCtrl;
+	class RichEditAudioOle :public RichEditOleBase
+	{
+		DECLARE_REOBJ(RichEditAudioOle, L"audio")
+	public:
+		enum ReAudioState
+		{
+			REAUDIO_STATE_NOPLAY,				//	未播放状态
+			REAUDIO_STATE_PLAYING,				//  正在播放状态
+			REAUDIO_STATE_PLAYFINISH,			//	播放完成状态
+		};
+
+		enum ReAudioLen
+		{
+			REAUDIO_LEN_15,
+			REAUDIO_LEN_30,
+			REAUDIO_LEN_45,
+			REAUDIO_LEN_60,
+		};
+
+		RichEditAudioOle();
+		~RichEditAudioOle();
+		BOOL InitOleWindow(IRichEditObjHost* pHost);
+
+		int GetAudioState(){return _state;}
+		SStringW GetAudioUrl(){return _audio_url;}
+		SStringW GetAudioDuration(){return _audio_duration;}
+		SStringW GetAudioId(){return GetId();}
+		void AudioPlayFinish();
+
+	protected:
+		void UpdatePosition();
+		bool OnAudioPlayClick(SOUI::EventArgs* pEvt);
+		bool OnAudioPlayingClick(SOUI::EventArgs* pEvt);
+	protected:
+		SOUI_ATTRS_BEGIN()
+			ATTR_STRINGW(L"audio_duration", _audio_duration, FALSE)
+			ATTR_STRINGW(L"audio_url", _audio_url, FALSE)
+			ATTR_STRINGW(L"audio_layout", _audio_layout, FALSE)
+			ATTR_STRINGW(L"audio_isplayed", _audio_isplayed, FALSE)
+		SOUI_ATTRS_END()
+
+	private:
+		int			_state;
+		SIZE        _maxSize;
+		SStringW	_audio_duration;
+		SStringW	_audio_url;
+		SStringW	_audio_layout;
+		ReAudioLen	_audio_len;
+		SStringW	_audio_isplayed;
+	};
+
+	// ------------------------------------------------------------------------------
+	//
+	// RichEditVideoOle
+	//
+	// ------------------------------------------------------------------------------
+	extern "C" const GUID IID_VideoOleCtrl;
+	class RichEditVideoOle :public RichEditOleBase
+	{
+		DECLARE_REOBJ(RichEditVideoOle, L"video")
+	public:
+		enum ReVideoState
+		{
+			REVIDEO_STATE_NORMAL,
+			REVIDEO_STATE_DOWNLOADING,
+			REVIDEO_STATE_DOWNFINISH,
+		};
+
+		RichEditVideoOle();
+		~RichEditVideoOle();
+		BOOL InitOleWindow(IRichEditObjHost* pHost);
+
+		int GetVideoState(){return _state;}
+		SStringW GetVideoUrl(){return _video_url;}
+		SStringW GetVideoDuration(){return _video_duration;}
+		SStringW GetVideoId(){return GetId();}
+
+		void SetVideoPlayState(int nstate);
+		void SetVideoFrameImage(const SStringW& sstrImagePath);
+	protected:
+		void UpdatePosition();
+		bool OnBnClickPlay(SOUI::EventArgs* pEvt);
+
+	protected:
+		SOUI_ATTRS_BEGIN()
+			ATTR_STRINGW(L"video_duration", _video_duration, FALSE)
+			ATTR_STRINGW(L"video_url", _video_url, FALSE)
+			ATTR_STRINGW(L"video_cover_path", _video_cover_path, FALSE)
+			ATTR_STRINGW(L"video_cover_width", _video_cover_width, FALSE)
+			ATTR_STRINGW(L"video_cover_height", _video_cover_height, FALSE)
+		SOUI_ATTRS_END()
+	private:
+		int			_state;
+		SStringW	_video_duration;			//视频时长
+		SStringW	_video_url;				//视频文件路径
+		SStringW	_video_cover_path;			//视频第一帧图片路径
+		SStringW	_video_cover_width;
+		SStringW	_video_cover_height;
+	};
 
 } // namespace SOUI

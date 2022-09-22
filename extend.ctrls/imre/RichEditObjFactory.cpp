@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "souistd.h"
 
 #include "RichEditObjFactory.h"
@@ -20,6 +20,8 @@ namespace SOUI
         _creaters[RichEditSeparatorBar::GetClassName()] = RichEditSeparatorBar::CreateObject;
         _creaters[RichEditMetaFileOle::GetClassName()] = RichEditMetaFileOle::CreateObject;
         _creaters[RichEditReminderOle::GetClassName()] = RichEditReminderOle::CreateObject;
+		_creaters[RichEditAudioOle::GetClassName()] = RichEditAudioOle::CreateObject;
+		_creaters[RichEditVideoOle::GetClassName()] = RichEditVideoOle::CreateObject;
     }
 
     RichEditObjFactory::~RichEditObjFactory()

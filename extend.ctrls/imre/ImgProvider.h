@@ -1,5 +1,5 @@
-﻿#pragma once
-#include "interface\render-i.h"
+#pragma once
+#include <interface/srender-i.h>
 #include <map>
 
 class ImageProvider

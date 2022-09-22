@@ -1,16 +1,16 @@
-Ôªø#include "stdafx.h"
+#include "stdafx.h"
 #include "souistd.h"
 #include <Gdiplus.h>
 #include "RichEditOleCtrls.h"
 #include "../SImageView.h"
 #include "RichEditOleBase.h"
 #include "SImRichedit.h"
-#include "../../extend.events/ExtendEvents.h"
+#include "ExtendEvents.h"
 #include "RichEditObjEvents.h"
-#include "../../utils.h"
+#include "utils.h"
 #include "HTTPDownloader.h"
 #include "HtmlParser.h"
-#include "../../extend.skins/SAntialiasSkin.h"
+#include "extend.skins/SAntialiasSkin.h"
 #include "ImgProvider.h"
 #include <shellapi.h>
 #include <commctrl.h>
@@ -71,7 +71,7 @@ namespace SOUI
     RichEditImageOle::~RichEditImageOle()
     {
         //
-        // ÊääÂõæÁâáskinÁöÑÂÜÖÂ≠òÁî±_oleViewÁÆ°ÁêÜÔºåÂΩì_oleViewÈáäÊîæÊó∂Ôºå‰ºöË∞ÉÁî®skinÁöÑrelease
+        // ∞—Õº∆¨skinµƒƒ⁄¥Ê”…_oleViewπ‹¿Ì£¨µ±_oleView Õ∑≈ ±£¨ª·µ˜”√skinµƒrelease
         // 
     }
 
@@ -166,7 +166,7 @@ namespace SOUI
 
     BOOL RichEditImageOle::SetImagePath(const SStringW& path, const SStringW& skinId)
     {
-        // ÂêåÊ≠•‰∏ãËΩΩÂõæÁâá
+        // Õ¨≤Ωœ¬‘ÿÕº∆¨
         SStringW newPath;
         if (!DownLoadNetworkFile(path, newPath))
         {
@@ -174,10 +174,10 @@ namespace SOUI
             return FALSE;
         }
 
-        // Â∞ΩÈáè‰øùËØÅÁî®Âêå‰∏ÄÂº†ÂõæÁâáÔºå‰∏çË¶ÅÈáçÂ§çÂä†ËΩΩ
-        // Â§¥ÂÉè„ÄÅË°®ÊÉÖ‰∏ÄÂÆöË¶ÅÁî®Âêå‰∏ÄÂº†
-        // ÂõæÁâáÁöÑÊã∑Ë¥ùÔºåÂèëÈÄÅ‰πüÂèØ‰ª•
-        // ‰ΩÜÊòØÊé•Êî∂Âà∞Â§öÂº†ÂêåÊ†∑ÁöÑÂõæÁâáÂ∞±‰∏çË°å‰∫Ü
+        // æ°¡ø±£÷§”√Õ¨“ª’≈Õº∆¨£¨≤ª“™÷ÿ∏¥º”‘ÿ
+        // Õ∑œÒ°¢±Ì«È“ª∂®“™”√Õ¨“ª’≈
+        // Õº∆¨µƒøΩ±¥£¨∑¢ÀÕ“≤ø…“‘
+        // µ´ «Ω” ’µΩ∂‡’≈Õ¨—˘µƒÕº∆¨æÕ≤ª––¡À
 
         _path = newPath;
         _skinId = skinId;
@@ -231,12 +231,12 @@ namespace SOUI
         CalculateExtentSize(_sizeNatural);
 
         _pImageView->SetSkin(pSkin);
-        _oleView.SetDelayDraw(_pImageView->GetFrameCount() > 1); // Â§ß‰∫é1Â∏ßÁöÑÂõæÁâáÈúÄË¶ÅÂª∂ËøüÂà∑Êñ∞
+        _oleView.SetDelayDraw(_pImageView->GetFrameCount() > 1); // ¥Û”⁄1÷°µƒÕº∆¨–Ë“™—”≥ŸÀ¢–¬
         _oleView.SetOleWindowRect(CRect());
         _oleView.Move(0, 0, _sizeNatural.cx, _sizeNatural.cy);
 
         //
-        // Âà∑Êñ∞UI
+        // À¢–¬UI
         //
 
         BOOL scrollToBottom = _pObjHost->IsScrollAtBottom();
@@ -279,8 +279,8 @@ namespace SOUI
     }
 
     //
-    // ÂõæÁâáoleÂè™ËØªÂèñImgCacheÈáåÁöÑÂõæÁâáÔºåÊâÄ‰ª•‰ºöÂøΩÁï•Êéâ_pathÂèÇÊï∞Ôºå_pathÁî®Êù•Áîü‰∫ßÁ≤òË¥¥Êùø‰ø°ÊÅØÊàñËÄÖÊèê‰æõÁªôpresenterÊâÄÁî®
-    // Ë∞ÉÁî®ËÄÖÈúÄË¶ÅÈ¢ÑÂÖàÂä†ËΩΩÂõæÁâáËøõImgCacheÈáåÔºåÁÑ∂ÂêéË∞ÉÁî®SetImageSkinÊñπÊ≥ï„ÄÇ
+    // Õº∆¨ole÷ª∂¡»°ImgCache¿ÔµƒÕº∆¨£¨À˘“‘ª·∫ˆ¬‘µÙ_path≤Œ ˝£¨_path”√¿¥…˙≤˙’≥Ã˘∞Â–≈œ¢ªÚ’ﬂÃ·π©∏¯presenterÀ˘”√
+    // µ˜”√’ﬂ–Ë“™‘§œ»º”‘ÿÕº∆¨Ω¯ImgCache¿Ô£¨»ª∫Ûµ˜”√SetImageSkin∑Ω∑®°£
     //
     BOOL RichEditImageOle::InitOleWindow(IRichEditObjHost * pHost)
     {
@@ -295,7 +295,7 @@ namespace SOUI
         ShowManifier(_showMagnifier);
 
         //
-        // ‰∏∫ËäÇÁúÅÂÜÖÂ≠òÔºåÂ∞ΩÈáè‰ΩøÁî®Âêå‰∏ÄÂº†ÂõæÁâá
+        // Œ™Ω⁄ °ƒ⁄¥Ê£¨æ°¡ø π”√Õ¨“ª’≈Õº∆¨
         //
         ISkinObj* pSkin = ImageProvider::GetImage(_skinId);
         if (pSkin != NULL)
@@ -308,8 +308,8 @@ namespace SOUI
                 }
 
                 //
-                // gifÂõæÁâáÈúÄË¶ÅÊã∑Ë¥ù‰∏Ä‰ªΩÊñ∞ÁöÑÂá∫Êù•ÔºåÂõ†‰∏∫GIFÁöÑÂΩìÂâçÊòæÁ§∫Â∏ßË¢´ÂêÑ‰∏™SImageViewÊåÅÊúâÔºåÂ¶ÇÊûúÂÖ¨Áî®‰∏Ä‰ªΩÂõæÁâáÂÜÖÂ≠òÔºå
-                // ÊòæÁ§∫ÁöÑÊó∂ÂÄôÂè™ËÉΩÊòæÁ§∫ÊúÄÂêé‰∏Ä‰∏™SImageViewÁöÑÂΩìÂâçÂ∏ß
+                // gifÕº∆¨–Ë“™øΩ±¥“ª∑›–¬µƒ≥ˆ¿¥£¨“ÚŒ™GIFµƒµ±«∞œ‘ æ÷°±ª∏˜∏ˆSImageView≥÷”–£¨»Áπ˚π´”√“ª∑›Õº∆¨ƒ⁄¥Ê£¨
+                // œ‘ æµƒ ±∫Ú÷ªƒ‹œ‘ æ◊Ó∫Û“ª∏ˆSImageViewµƒµ±«∞÷°
                 // 
                 _skinId = GenGuid();
                 SAntialiasSkin* pNewSkin = new SAntialiasSkin();
@@ -323,7 +323,7 @@ namespace SOUI
         }
         else if (!_path.IsEmpty())
         {
-            // ÁºìÂ≠òÈáåÊ≤°ÊúâÊåáÂÆöÁöÑÂõæÁâáÂ∞±ÈáçÊñ∞Âä†ËΩΩ
+            // ª∫¥Ê¿Ô√ª”–÷∏∂®µƒÕº∆¨æÕ÷ÿ–¬º”‘ÿ
             return SetImagePath(_path, _skinId);
         }
 
@@ -429,7 +429,7 @@ namespace SOUI
         if (msg == WM_LBUTTONDBLCLK)
         {
             _pObjHost->NotifyRichObjEvent(this, DBLCLICK_IMAGEOLE, 0, 0);
-            bHandled = TRUE; // ‰∏çÂ∏åÊúõÂèåÂáª‰∫ã‰ª∂ÁªßÁª≠ÂæÄrichedit‰º†ÈÄí
+            bHandled = TRUE; // ≤ªœ£Õ˚À´ª˜ ¬º˛ºÃ–¯Õ˘richedit¥´µ›
         }
 
         return 0;
@@ -443,282 +443,240 @@ namespace SOUI
     static const GUID IID_FileOleCtrl =
     { 0xe0ed3fc5, 0x1645, 0x4b7f, { 0xa0, 0xe2, 0x86, 0xf5, 0x28, 0x8f, 0x40, 0x7b } };
 
-	RichEditFileOle::RichEditFileOle()
-	{
-		_oleGuid = IID_FileOleCtrl;
-		_sizeNatural.cx = 300;
-		_sizeNatural.cy = 95;
-		_canBeSelect = FALSE;
-		_xmlLayout = L"LAYOUT:FileOleLayout";
-	}
+    RichEditFileOle::RichEditFileOle()
+    {
+        _oleGuid = IID_FileOleCtrl;
+        _sizeNatural.cx = 295;
+        _sizeNatural.cy = 95;
+        _xmlLayout = L"LAYOUT:FileOleLayout";
+    }
 
-	RichEditFileOle::~RichEditFileOle()
-	{
-	}
+    RichEditFileOle::~RichEditFileOle()
+    {
+    }
 
-	SStringW RichEditFileOle::MakeFormattedText(
-		const SStringW& filePath,
-		const SStringW& fileState,
-		__int64 fileSize,
-		int visibleLinks, 
-		const SStringW& fileSuffix)
-	{
-		SStringW formattedText;
+    SStringW RichEditFileOle::MakeFormattedText(
+        const SStringW& filePath,
+        const SStringW& fileState,
+        __int64 fileSize,
+        int visibleLinks)
+    {
+        SStringW formattedText;
 
-		formattedText.Format(L"<file selectable=\"0\" file-path=\"%s\" file-size=\"%I64d\" file-state=\"%s\" links=\"%d\" file-suffix=\"%s\" />",
-			filePath,       // file-path
-			fileSize,       // file-size
-			fileState,      // file-state
-			visibleLinks,	// links
-			fileSuffix);  
+        formattedText.Format(L"<file selectable=\"0\" file-path=\"%s\" file-size=\"%I64d\" file-state=\"%s\" links=\"%d\" />",
+            filePath,       // file-path
+            fileSize,       // file-size
+            fileState,      // file-state
+            visibleLinks);  // links
 
-		return formattedText;
-	}
+        return formattedText;
+    }
 
-	bool RichEditFileOle::OnFileNameClicked(SOUI::EventArgs* pEvt)
-	{
-		int linkFlag = LINK_OPEN_FILE;
-		_pObjHost->NotifyRichObjEvent(this, CLICK_FILEOLE, linkFlag, (LPARAM)(LPCWSTR)_filePath);
-		return true;
-	}
+    //LRESULT RichEditFileOle::ProcessMessage(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+    //{
+    //    RichEditOleBase::ProcessMessage(msg, wParam, lParam, bHandled);
+    //    if (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK)
+    //    {
+    //        bHandled = TRUE; // Œƒº˛OLE≤ª»√RichEditºÃ–¯◊Ûª˜£¨∑Ò‘Úª·ª≠≥ˆ“ª∏ˆ∫⁄øÚ
+    //    }
+    //    return 0;
+    //}
 
-	bool RichEditFileOle::OnLinkClicked(SOUI::EventArgs *pEvt)
-	{
-		int linkFlag = 0;
+    bool RichEditFileOle::OnLinkClicked(SOUI::EventArgs *pEvt)
+    {
+        int linkFlag = 0;
 
-		SStringW linkName = pEvt->sender->GetName();
-		if (linkName == _T("LnkSaveFile"))
-		{
-			linkFlag = LINK_SAVE;
-		}
-		else if (linkName == _T("LnkSaveFileAs"))
-		{
-			linkFlag = LINK_SAVEAS;
-		}
-		else if (linkName == _T("LnkCancelFile"))
-		{
-			linkFlag = LINK_CANCEL;
-		}
-		else if (linkName == _T("LnkOpenFile"))
-		{
-			linkFlag = LINK_OPEN_FILE;
-		}
-		else if (linkName == _T("LnkOpenFileDir"))
-		{
-			linkFlag = LINK_OPEN_DIR;
-		}
-		else if (linkName == _T("LnkContinueFile"))
-		{
-			linkFlag = LINK_CONTINUE;
-		}
-		else if (linkName == _T("LnkForwardFile"))
-		{
-			linkFlag = LINK_FORWARD;
-		}
-		else if (linkName == _T("LnkDownLoad"))
-		{
-			linkFlag = LINK_DOWNLOAD;
-		}
+        SStringW linkName = pEvt->sender->GetName();
+        if (linkName == _T("LnkSaveFile"))
+        {
+            linkFlag = LINK_SAVE;
+        }
+        else if (linkName == _T("LnkSaveFileAs"))
+        {
+            linkFlag = LINK_SAVEAS;
+        }
+        else if (linkName == _T("LnkCancelFile"))
+        {
+            linkFlag = LINK_CANCEL;
+        }
+        else if (linkName == _T("LnkOpenFile"))
+        {
+            linkFlag = LINK_OPEN_FILE;
+        }
+        else if (linkName == _T("LnkOpenFileDir"))
+        {
+            linkFlag = LINK_OPEN_DIR;
+        }
+        else if (linkName == _T("LnkContinueFile"))
+        {
+            linkFlag = LINK_CONTINUE;
+        }
+        else if (linkName == _T("LnkForwardFile"))
+        {
+            linkFlag = LINK_FORWARD;
+        }
 
-		_pObjHost->NotifyRichObjEvent(this, CLICK_FILEOLE, linkFlag, (LPARAM)(LPCWSTR)_filePath);
-		return true;
-	}
+        _pObjHost->NotifyRichObjEvent(this, CLICK_FILEOLE, linkFlag, (LPARAM)(LPCWSTR)_filePath);
+        return true;
+    }
 
-	SStringW RichEditFileOle::GetSizeBeautyString(unsigned long long size)
-	{
-		const TCHAR* pLevelTable[] = { _T("B"), _T("KB"), _T("MB"), _T("GB") };
+    SStringW RichEditFileOle::GetSizeBeautyString(unsigned long long size)
+    {
+        const TCHAR* pLevelTable[] = { _T("B"), _T("KB"), _T("MB"), _T("GB") };
 
-		int level = 0;
-		long double fSize = (long double)size;
-		for (; fSize > 1024.0f; ++level)
-		{
-			fSize /= 1024.0f;
-		}
+        int level = 0;
+        long double fSize = (long double)size;
+        for (; fSize > 1024.0f; ++level)
+        {
+            fSize /= 1024.0f;
+        }
 
-		return SStringW().Format(_T("%.2f %s"), fSize, pLevelTable[level]);
-	}
+        return SStringW().Format(_T("%.2f %s"), fSize, pLevelTable[level]);
+    }
 
-	BOOL RichEditFileOle::InitOleWindow(IRichEditObjHost* pHost)
-	{
-		RichEditOleBase::InitOleWindow(pHost);
+    BOOL RichEditFileOle::InitOleWindow(IRichEditObjHost* pHost)
+    {
+        RichEditOleBase::InitOleWindow(pHost);
 
-		__int64 size = _wtoi64(_fileSize);
+        __int64 size = _wtoi64(_fileSize);
 
-		SetFileSize(size, FALSE);
-		SetFilePath(_filePath);
-		SetFileLinksVisible(_links);
-		SetFileStateString(_fileState);
-		SetFileSuffix(_fileSuffix);
+        SetFileSize(size, FALSE);
+        SetFilePath(_filePath);
+        SetFileLinksVisible(_links);
+        SetFileStateString(_fileState);
 
-		TCHAR* links[] = {
-			_T("LnkSaveFile"),
-			_T("LnkSaveFileAs"),
-			_T("LnkCancelFile"),
-			_T("LnkOpenFile"),
-			_T("LnkOpenFileDir"),
-			_T("LnkContinueFile"),
-			_T("LnkForwardFile"),
-			_T("LnkDownLoad"),
-		};
+        TCHAR* links[] = {
+            _T("LnkSaveFile"),
+            _T("LnkSaveFileAs"),
+            _T("LnkCancelFile"),
+            _T("LnkOpenFile"),
+            _T("LnkOpenFileDir"),
+            _T("LnkContinueFile"),
+            _T("LnkForwardFile"),
+        };
 
-		SWindow* pWndName = _oleView.FindChildByName(L"file_suffix");
-		if (pWndName)
-		{
-			SUBSCRIBE(pWndName, EVT_CMD, RichEditFileOle::OnFileNameClicked);
-		}
+        for (int i = 0; i < sizeof(links) / sizeof(links[0]); ++i)
+        {
+            SWindow * pWnd = _oleView.FindChildByName(links[i]);
+            if (pWnd)
+            {
+                SUBSCRIBE(pWnd, EVT_CMD, RichEditFileOle::OnLinkClicked);
+            }
+        }
 
-		for (int i = 0; i < sizeof(links) / sizeof(links[0]); ++i)
-		{
-			SWindow * pWnd = _oleView.FindChildByName(links[i]);
-			if (pWnd)
-			{
-				SUBSCRIBE(pWnd, EVT_CMD, RichEditFileOle::OnLinkClicked);
-			}
-		}
+        return TRUE;
+    }
 
-		return TRUE;
-	}
+    void RichEditFileOle::SetFileSize(__int64 size, BOOL requestLayout/*=TRUE*/)
+    {
+        //_fileSizeBytes = _wtoi64(size);
+        _fileSizeBytes = size;
 
-	void RichEditFileOle::SetFileSize(__int64 size, BOOL requestLayout/*=TRUE*/)
-	{
-		//_fileSizeBytes = _wtoi64(size);
-		_fileSizeBytes = size;
+        SWindow * pSizeWnd = _oleView.FindChildByName(L"LblFileSize");
+        if (pSizeWnd)
+        {
+            //_fileSize = size;
 
-		SWindow * pSizeWnd = _oleView.FindChildByName(L"LblFileSize");
-		if (pSizeWnd)
-		{
-			//_fileSize = size;
+            SStringW text;
+            text.Format(_T("%s"), GetSizeBeautyString(_fileSizeBytes));
 
-			SStringW text;
-			text.Format(_T("%s"), GetSizeBeautyString(_fileSizeBytes));
+            pSizeWnd->SetWindowText(text);
+            if (requestLayout)
+            {
+                UpdateWindowLayout(pSizeWnd);
+            }
+        }
+    }
 
-			pSizeWnd->SetWindowText(text);
-			if (requestLayout)
-			{
-				UpdateWindowLayout(pSizeWnd);
-			}
-		}
-	}
+    void RichEditFileOle::SetFileStateString(const SStringW& str)
+    {
+        SWindow * pWnd = _oleView.FindChildByName(L"LblState");
+        if (pWnd)
+        {
+            pWnd->SetWindowText(str);
+        }
+    }
 
-	void RichEditFileOle::SetFileStateString(const SStringW& str)
-	{
-		SWindow * pWnd = _oleView.FindChildByName(L"LblState");
-		if (pWnd)
-		{
-			pWnd->SetWindowText(str);
-		}
-	}
+    void RichEditFileOle::SetFilePath(const SStringW& path)
+    {
+        _filePath = path;
 
-	void RichEditFileOle::SetFilePath(const SStringW& path)
-	{
-		_filePath = path;
+        SWindow * pWnd = _oleView.FindChildByName(L"LblFileName");
+        if (pWnd)
+        {
+            _fileName = path;
+            int slash = _filePath.ReverseFind(_T('\\'));
+            if (slash > 0)
+            {
+                _fileName = _filePath.Mid(slash + 1);
+            }
 
-		SWindow * pWnd = _oleView.FindChildByName(L"LblFileName");
-		if (pWnd)
-		{
-			_fileName = path;
-			int slash = _filePath.ReverseFind(_T('\\'));
-			if (slash > 0)
-			{
-				_fileName = _filePath.Mid(slash + 1);
-			}
+            pWnd->SetWindowText(_fileName);
+            pWnd->SetAttribute(L"tip", _fileName);
+        }
 
-			pWnd->SetWindowText(_fileName);
-			pWnd->SetAttribute(L"tip", _fileName);
-		}
+        SImageWnd * pImageWin = static_cast<SImageWnd*>(_oleView.FindChildByName(L"ImgFileIcon"));
+        if (pImageWin)
+        {
+            ISkinObj * pSkin = GetFileIconSkin(path);
+            if (pSkin)
+            {
+                pImageWin->SetSkin(pSkin);
+                pSkin->Release();
+            }
+        }
+    }
 
-		SImageWnd * pImageWin = static_cast<SImageWnd*>(_oleView.FindChildByName(L"ImgFileIcon"));
-		if (pImageWin)
-		{
-			ISkinObj * pSkin = GetFileIconSkin(path);
-			if (pSkin)
-			{
-				pImageWin->SetSkin(pSkin);
-				pSkin->Release();
-			}
-		}
-	}
+    void RichEditFileOle::SetFileLinksVisible(int links)
+    {
+        SWindow * pWnd = NULL;
+        BOOL visible = FALSE;
 
-	void RichEditFileOle::SetFileSuffix(const SStringW& suffix)
-	{
-		_fileSuffix = suffix;
-		SWindow * pWnd = _oleView.FindChildByName(L"file_suffix");
-		if (pWnd)
-		{
-			SStatic* pTextSuffix = pWnd->FindChildByName2<SStatic>(L"FileSuffix");
-			if (pTextSuffix)
-			{
-				pTextSuffix->SetWindowText(_fileSuffix);
-			}
-		}
-	}
+        if (pWnd = _oleView.FindChildByName(L"LnkSaveFile"))
+        {
+            visible = (links & LINK_SAVE) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-	void RichEditFileOle::SetFileUrl(const SStringW& url)
-	{
-		_fileUrl = url;
-	}
+        if (pWnd = _oleView.FindChildByName(L"LnkSaveFileAs"))
+        {
+            visible = (links & LINK_SAVEAS) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-	SStringW RichEditFileOle::GetFileUrl()
-	{
-		return _fileUrl;
-	}
+        if (pWnd = _oleView.FindChildByName(L"LnkCancelFile"))
+        {
+            visible = (links & LINK_CANCEL) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-	void RichEditFileOle::SetFileLinksVisible(int links)
-	{
-		SWindow * pWnd = NULL;
-		BOOL visible = FALSE;
+        if (pWnd = _oleView.FindChildByName(L"LnkOpenFile"))
+        {
+            visible = (links & LINK_OPEN_FILE) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-		if (pWnd = _oleView.FindChildByName(L"LnkSaveFile"))
-		{
-			visible = (links & LINK_SAVE) != 0;
-			pWnd->SetVisible(visible);
-		}
+        if (pWnd = _oleView.FindChildByName(L"LnkOpenFileDir"))
+        {
+            visible = (links & LINK_OPEN_DIR) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-		if (pWnd = _oleView.FindChildByName(L"LnkSaveFileAs"))
-		{
-			visible = (links & LINK_SAVEAS) != 0;
-			pWnd->SetVisible(visible);
-		}
+        if (pWnd = _oleView.FindChildByName(L"LnkContinueFile"))
+        {
+            visible = (links & LINK_CONTINUE) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-		if (pWnd = _oleView.FindChildByName(L"LnkCancelFile"))
-		{
-			visible = (links & LINK_CANCEL) != 0;
-			pWnd->SetVisible(visible);
-		}
+        if (pWnd = _oleView.FindChildByName(L"LnkForwardFile"))
+        {
+            visible = (links & LINK_FORWARD) != 0;
+            pWnd->SetVisible(visible);
+        }
 
-		if (pWnd = _oleView.FindChildByName(L"LnkOpenFile"))
-		{
-			visible = (links & LINK_OPEN_FILE) != 0;
-			pWnd->SetVisible(visible);
-		}
-
-		if (pWnd = _oleView.FindChildByName(L"LnkOpenFileDir"))
-		{
-			visible = (links & LINK_OPEN_DIR) != 0;
-			pWnd->SetVisible(visible);
-		}
-
-		if (pWnd = _oleView.FindChildByName(L"LnkContinueFile"))
-		{
-			visible = (links & LINK_CONTINUE) != 0;
-			pWnd->SetVisible(visible);
-		}
-
-		if (pWnd = _oleView.FindChildByName(L"LnkForwardFile"))
-		{
-			visible = (links & LINK_FORWARD) != 0;
-			pWnd->SetVisible(visible);
-		}
-
-		if (pWnd = _oleView.FindChildByName(L"LnkDownLoad"))
-		{
-			visible = (links & LINK_DOWNLOAD) != 0;
-			pWnd->SetVisible(visible);
-		}
-
-		pWnd = _oleView.FindChildByName(L"WndLinksContainer");
-		UpdateWindowLayout(pWnd);
-	}
+        pWnd = _oleView.FindChildByName(L"WndLinksContainer");
+        UpdateWindowLayout(pWnd);
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -867,7 +825,7 @@ namespace SOUI
     //    RichEditOleBase::ProcessMessage(msg, wParam, lParam, bHandled);
     //    if (msg == WM_LBUTTONDOWN)
     //    {
-    //        bHandled = TRUE; // Êü•ÁúãÊõ¥Â§öOLE‰∏çËÆ©RichEditÁªßÁª≠Â∑¶ÂáªÔºåÂê¶Âàô‰ºöÁîªÂá∫‰∏Ä‰∏™ÈªëÊ°Ü
+    //        bHandled = TRUE; // ≤Èø¥∏¸∂‡OLE≤ª»√RichEditºÃ–¯◊Ûª˜£¨∑Ò‘Úª·ª≠≥ˆ“ª∏ˆ∫⁄øÚ
     //    }
     //    return 0;
     //}
@@ -880,7 +838,7 @@ namespace SOUI
             _sizeNatural.cx = rcHost.Width();
 
             CalculateExtentSize(_sizeNatural);
-            _oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // Â∑≤ÁªèÂ§±Êïà
+            _oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // “—æ≠ ß–ß
             _oleView.Move(0, 0, _sizeNatural.cx, _sizeNatural.cy);
             _spAdviseSink->OnViewChange(DVASPECT_CONTENT, -1);
         }
@@ -907,7 +865,7 @@ namespace SOUI
         if (_spAdviseSink)
         {
             _sizeNatural.cx = _pObjHost->GetHostRect().Width();
-            _oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // Â∑≤ÁªèÂ§±Êïà
+            _oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // “—æ≠ ß–ß
             _oleView.Move(0, 0, _sizeNatural.cx, _sizeNatural.cy);
             CalculateExtentSize(_sizeNatural);
             _spAdviseSink->OnViewChange(DVASPECT_CONTENT, -1);
@@ -918,7 +876,7 @@ namespace SOUI
     //{
     //    if (msg == WM_LBUTTONDOWN)
     //    {
-    //        bHandled = TRUE; // ÂàÜÈöîÊ†èOLE‰∏çËÆ©RichEditÁªßÁª≠Â∑¶ÂáªÔºåÂê¶Âàô‰ºöÁîªÂá∫‰∏Ä‰∏™ÈªëÊ°Ü
+    //        bHandled = TRUE; // ∑÷∏Ù¿∏OLE≤ª»√RichEditºÃ–¯◊Ûª˜£¨∑Ò‘Úª·ª≠≥ˆ“ª∏ˆ∫⁄øÚ
     //    }
     //    return 0;
     //}
@@ -1179,10 +1137,673 @@ namespace SOUI
         if (msg == WM_LBUTTONDBLCLK)
         {
             _pObjHost->NotifyRichObjEvent(this, DBLCLICK_RICH_METAFILE, 0, 0);
-            bHandled = TRUE; // ‰∏çÂ∏åÊúõÂèåÂáª‰∫ã‰ª∂ÁªßÁª≠ÂæÄrichedit‰º†ÈÄí
+            bHandled = TRUE; // ≤ªœ£Õ˚À´ª˜ ¬º˛ºÃ–¯Õ˘richedit¥´µ›
         }
 
         return 0;
     }
 
+	//////////////////////////////////////////////////////////////////////////
+	//
+	//{FC587550-0242-4fa9-AE1C-B72581AD2AC7}
+	static const GUID IID_AudioOleCtrl = 
+	{ 0xfc587550, 0x242, 0x4fa9, { 0xae, 0x1c, 0xb7, 0x25, 0x81, 0xad, 0x2a, 0xc7} };
+
+	RichEditAudioOle::RichEditAudioOle()
+	{
+		_oleGuid = IID_AudioOleCtrl;
+		_maxSize.cx = _maxSize.cy = 180;
+		_state = REAUDIO_STATE_NOPLAY;
+		_canBeSelect = FALSE;
+		_xmlLayout = L"LAYOUT:AudioOleLayout";
+	}
+
+	RichEditAudioOle::~RichEditAudioOle()
+	{
+		//
+		// ∞—Õº∆¨skinµƒƒ⁄¥Ê”…_oleViewπ‹¿Ì£¨µ±_oleView Õ∑≈ ±£¨ª·µ˜”√skinµƒrelease
+		// 
+	}
+
+	void RichEditAudioOle::AudioPlayFinish()
+	{
+		_state = REAUDIO_STATE_PLAYFINISH;
+		SWindow* pLeftAudio = _oleView.FindChildByName2<SWindow>(L"left_audio");
+		SWindow* pRightAudio = _oleView.FindChildByName2<SWindow>(L"right_audio");
+		if (!pLeftAudio || !pRightAudio)
+			return;
+
+		if (L"left" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(TRUE, TRUE);
+			pRightAudio->SetVisible(FALSE, TRUE);
+			SImageView* pImgPlay = pLeftAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(TRUE, TRUE);
+
+			SImageView* pImgPlaying = pLeftAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+				pImgPlaying->SetVisible(FALSE, TRUE);
+
+			SImageView* pImageReddot= pLeftAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pLeftAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+		else if (L"right" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(FALSE, TRUE);
+			pRightAudio->SetVisible(TRUE, TRUE);
+			SImageView* pImgPlay = pRightAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(TRUE, TRUE);
+
+			SImageView* pImgPlaying = pRightAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+				pImgPlaying->SetVisible(FALSE, TRUE);
+
+			SImageView* pImageReddot= pRightAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pRightAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+	}
+
+	bool RichEditAudioOle::OnAudioPlayClick(SOUI::EventArgs* pEvt)
+	{
+		_state = REAUDIO_STATE_PLAYING;
+		SWindow* pLeftAudio = _oleView.FindChildByName2<SWindow>(L"left_audio");
+		SWindow* pRightAudio = _oleView.FindChildByName2<SWindow>(L"right_audio");
+		if (!pLeftAudio || !pRightAudio)
+			return false;
+
+		if (L"left" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(TRUE, TRUE);
+			pRightAudio->SetVisible(FALSE, TRUE);
+			SImageView* pImgPlay = pLeftAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(FALSE, TRUE);
+
+			SImageView* pImgPlaying = pLeftAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+			{
+				pImgPlaying->SetVisible(TRUE, TRUE);
+				pImgPlaying->Resume();
+			}
+
+			SImageView* pImageReddot= pLeftAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pLeftAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+		else if (L"right" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(FALSE, TRUE);
+			pRightAudio->SetVisible(TRUE, TRUE);
+			SImageView* pImgPlay = pRightAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(FALSE, TRUE);
+
+			SImageView* pImgPlaying = pRightAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+			{
+				pImgPlaying->SetVisible(TRUE, TRUE);
+				pImgPlaying->Resume();
+			}
+
+			SImageView* pImageReddot= pRightAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pRightAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+
+		_pObjHost->NotifyRichObjEvent(this, CLICK_AUDIO_PLAY, 0, 0);
+		return true;
+	}
+
+	bool RichEditAudioOle::OnAudioPlayingClick(SOUI::EventArgs* pEvt)
+	{		
+		_state = REAUDIO_STATE_PLAYFINISH;
+		SWindow* pLeftAudio = _oleView.FindChildByName2<SWindow>(L"left_audio");
+		SWindow* pRightAudio = _oleView.FindChildByName2<SWindow>(L"right_audio");
+		if (!pLeftAudio || !pRightAudio)
+			return false;
+
+		if (L"left" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(TRUE, TRUE);
+			pRightAudio->SetVisible(FALSE, TRUE);
+			SImageView* pImgPlay = pLeftAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(TRUE, TRUE);
+
+			SImageView* pImgPlaying = pLeftAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+			{
+				pImgPlaying->SetVisible(FALSE, TRUE);
+			}
+
+			SImageView* pImageReddot= pLeftAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pLeftAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+		else if (L"right" == _audio_layout)
+		{
+			pLeftAudio->SetVisible(FALSE, TRUE);
+			pRightAudio->SetVisible(TRUE, TRUE);
+			SImageView* pImgPlay = pRightAudio->FindChildByName2<SImageView>(L"play");
+			if (pImgPlay)
+				pImgPlay->SetVisible(TRUE, TRUE);
+
+			SImageView* pImgPlaying = pRightAudio->FindChildByName2<SImageView>(L"playing");
+			if (pImgPlaying)
+			{
+				pImgPlaying->SetVisible(FALSE, TRUE);
+			}
+
+			SImageView* pImageReddot= pRightAudio->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot)
+				pImageReddot->SetVisible(FALSE, TRUE);
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pRightAudio->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+
+		_pObjHost->NotifyRichObjEvent(this, CLICK_AUDIO_PLAYING, 0, 0);
+		return true;
+	}
+
+	BOOL RichEditAudioOle::InitOleWindow(IRichEditObjHost * pHost)
+	{
+		BOOL ret = RichEditOleBase::InitOleWindow(pHost);
+		std::wstring wstrAudioDuration = _audio_duration;
+		std::string strAudioDuration = S_CW2A(wstrAudioDuration.c_str());
+		int nAudioDuration = atoi(strAudioDuration.c_str());
+		if (nAudioDuration > 0 && nAudioDuration <= 15)
+			_audio_len = REAUDIO_LEN_15;
+		else if (nAudioDuration > 15 && nAudioDuration <= 30)
+			_audio_len = REAUDIO_LEN_30;
+		else if (nAudioDuration > 30 && nAudioDuration <= 45)
+			_audio_len = REAUDIO_LEN_45;
+		else
+			_audio_len = REAUDIO_LEN_60;
+
+		SStringW sstrPlaySkin, sstrPlayingSkin;
+		if (L"left" == _audio_layout)
+		{
+			switch (_audio_len)
+			{
+			case REAUDIO_LEN_15:
+				{
+					sstrPlaySkin = L"skin.richaudio_15play";
+					sstrPlayingSkin = L"skin.richaudio_15playing";
+				}
+				break;
+			case REAUDIO_LEN_30:
+				{
+					sstrPlaySkin = L"skin.richaudio_30play";
+					sstrPlayingSkin = L"skin.richaudio_30playing";
+				}
+				break;
+			case REAUDIO_LEN_45:
+				{
+					sstrPlaySkin = L"skin.richaudio_45play";
+					sstrPlayingSkin = L"skin.richaudio_45playing";
+				}
+				break;
+			case REAUDIO_LEN_60:
+				{
+					sstrPlaySkin = L"skin.richaudio_60play";
+					sstrPlayingSkin = L"skin.richaudio_60playing";
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			switch (_audio_len)
+			{
+			case REAUDIO_LEN_15:
+				{
+					sstrPlaySkin = L"skin.richaudio_right15play";
+					sstrPlayingSkin = L"skin.richaudio_right15playing";
+				}
+				break;
+			case REAUDIO_LEN_30:
+				{
+					sstrPlaySkin = L"skin.richaudio_right30play";
+					sstrPlayingSkin = L"skin.richaudio_right30playing";
+				}
+				break;
+			case REAUDIO_LEN_45:
+				{
+					sstrPlaySkin = L"skin.richaudio_right45play";
+					sstrPlayingSkin = L"skin.richaudio_right45playing";
+				}
+				break;
+			case REAUDIO_LEN_60:
+				{
+					sstrPlaySkin = L"skin.richaudio_right60play";
+					sstrPlayingSkin = L"skin.richaudio_right60playing";
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		ISkinObj* pSkinPlay = GETSKIN(sstrPlaySkin, 100);
+		ISkinObj* pSkinPlaying = GETSKIN(sstrPlayingSkin, 100);
+		if (L"left" == _audio_layout)
+		{
+			SWindow* pLeftWindow = _oleView.FindChildByName2<SWindow>(L"left_audio");
+			SWindow* pRightWindow = _oleView.FindChildByName2<SWindow>(L"right_audio");
+			if (pLeftWindow && pRightWindow)
+			{
+				pLeftWindow->SetVisible(TRUE, TRUE);
+				pRightWindow->SetVisible(FALSE, TRUE);
+				SImageView* pImgPlay = pLeftWindow->FindChildByName2<SImageView>(L"play");
+				SImageView* pImgPlaying = pLeftWindow->FindChildByName2<SImageView>(L"playing");
+				if (pImgPlay && pSkinPlay)
+				{
+					pImgPlay->SetSkin(pSkinPlay);
+					pImgPlay->SetVisible(TRUE, TRUE);
+					pImgPlay->Resume();
+					SUBSCRIBE(pImgPlay, EVT_CMD, RichEditAudioOle::OnAudioPlayClick);
+				}
+				if (pImgPlaying && pSkinPlaying)
+				{
+					pImgPlaying->SetSkin(pSkinPlaying);
+					pImgPlaying->SetVisible(FALSE, TRUE);
+					pImgPlaying->Resume();
+					SUBSCRIBE(pImgPlaying, EVT_CMD, RichEditAudioOle::OnAudioPlayingClick);
+				}
+			}
+
+			ISkinObj* pSkinReddot = GETSKIN(L"skin.richaudio_reddot", 100);
+			SImageView* pImageReddot= pLeftWindow->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot && pSkinReddot)
+			{
+				pImageReddot->SetSkin(pSkinReddot);
+				if (L"0" == _audio_isplayed)
+					pImageReddot->SetVisible(TRUE, TRUE);	
+				else
+					pImageReddot->SetVisible(FALSE, TRUE);
+			}
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pLeftWindow->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+		else if (L"right" == _audio_layout)
+		{
+			SWindow* pLeftWindow = _oleView.FindChildByName2<SWindow>(L"left_audio");
+			SWindow* pRightWindow = _oleView.FindChildByName2<SWindow>(L"right_audio");
+			if (pLeftWindow && pRightWindow)
+			{
+				pLeftWindow->SetVisible(FALSE, TRUE);
+				pRightWindow->SetVisible(TRUE, TRUE);
+				SImageView* pImgPlay = pRightWindow->FindChildByName2<SImageView>(L"play");
+				SImageView* pImgPlaying = pRightWindow->FindChildByName2<SImageView>(L"playing");
+				if (pImgPlay && pSkinPlay)
+				{
+					pImgPlay->SetSkin(pSkinPlay);
+					pImgPlay->SetVisible(TRUE, TRUE);
+					pImgPlay->Resume();
+					SUBSCRIBE(pImgPlay, EVT_CMD, RichEditAudioOle::OnAudioPlayClick);
+				}
+				if (pImgPlaying && pSkinPlaying)
+				{
+					pImgPlaying->SetSkin(pSkinPlaying);
+					pImgPlaying->SetVisible(FALSE, TRUE);
+					pImgPlaying->Resume();
+					SUBSCRIBE(pImgPlaying, EVT_CMD, RichEditAudioOle::OnAudioPlayingClick);
+				}
+			}
+
+			ISkinObj* pSkinReddot = GETSKIN(L"skin.richaudio_reddot", 100);
+			SImageView* pImageReddot= pRightWindow->FindChildByName2<SImageView>(L"isplayed");
+			if (pImageReddot && pSkinReddot)
+			{
+				pImageReddot->SetSkin(pSkinReddot);
+				if (L"0" == _audio_isplayed)
+					pImageReddot->SetVisible(TRUE, TRUE);	
+				else
+					pImageReddot->SetVisible(FALSE, TRUE);
+			}
+			pImageReddot->Invalidate();
+
+			std::wstring wstrDuration;
+			wstrDuration.append(_audio_duration);
+			wstrDuration.append(L"\"");
+			SWindow* pAudioDuration = pRightWindow->FindChildByName2<SWindow>(L"audio_duration");
+			if (pAudioDuration)
+			{
+				pAudioDuration->SetWindowText(wstrDuration.c_str());
+				pAudioDuration->SetVisible(TRUE, TRUE);
+			}
+		}
+
+		return ret;
+	}
+
+	void RichEditAudioOle::UpdatePosition()
+	{
+		if (_spAdviseSink)
+		{
+			if (REAUDIO_LEN_15 == _audio_len)
+				_sizeNatural.cx = 130;
+			else if (REAUDIO_LEN_30 == _audio_len)
+				_sizeNatural.cx = 150;
+			else if (REAUDIO_LEN_45 == _audio_len)
+				_sizeNatural.cx = 170;	
+			else if (REAUDIO_LEN_60 == _audio_len)
+				_sizeNatural.cx = 190;
+			_sizeNatural.cy = 40;
+
+			_oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // “—æ≠ ß–ß
+			_oleView.Move(0, 0, _sizeNatural.cx, _sizeNatural.cy);
+			CalculateExtentSize(_sizeNatural);
+			_spAdviseSink->OnViewChange(DVASPECT_CONTENT, -1);
+		}
+	}
+
+	//
+	// ------------------------------------------------------------------------------
+	// impl RichEditVideoOle
+	//
+	// {78B749AA-79CB-4c2b-B272-1DDA93AA0B4B}
+	static const GUID IID_VideoOleCtrl = 
+	{ 0x78b749aa, 0x79cb, 0x4c2b, { 0xb2, 0x72, 0x1d, 0xda, 0x93, 0xaa, 0xb, 0x4b } };
+	RichEditVideoOle::RichEditVideoOle()
+	{
+		_oleGuid = IID_VideoOleCtrl;
+		_sizeNatural.cx = 300;
+		_sizeNatural.cy = 160;
+		_state = REVIDEO_STATE_NORMAL;
+		_canBeSelect = FALSE;
+		_xmlLayout = L"LAYOUT:VideoOleLayout";
+	}
+
+	RichEditVideoOle::~RichEditVideoOle()
+	{
+	}
+
+	BOOL RichEditVideoOle::InitOleWindow(IRichEditObjHost* pHost)
+	{
+		BOOL ret = RichEditOleBase::InitOleWindow(pHost);
+		SWindow* pVideoWnd = _oleView.FindChildByName2<SWindow>(L"video_frame");
+		if (pVideoWnd)
+		{
+			SImageWnd* pVideoCoverWnd = pVideoWnd->FindChildByName2<SImageWnd>(L"video_cover_img");
+			IBitmap* pFrameImg = SResLoadFromFile::LoadImage(_video_cover_path);
+			if (pVideoCoverWnd && pFrameImg)
+			{
+				pVideoCoverWnd->SetImage(pFrameImg);
+				UpdateWindowLayout(pVideoCoverWnd);
+			}
+		}
+
+		SImageView* pPlay = _oleView.FindChildByName2<SImageView>(L"play");
+		ISkinObj* pPlaySkin = GETSKIN(L"skin.richvideo_play", 100);
+		if (pPlay && pPlaySkin)
+		{
+			pPlay->SetSkin(pPlaySkin);
+			pPlay->SetVisible(TRUE, TRUE);
+			pPlay->Resume();
+
+			SUBSCRIBE(pPlay, EVT_CMD, RichEditVideoOle::OnBnClickPlay);
+		}
+
+		SImageView* pLoading = _oleView.FindChildByName2<SImageView>(L"loading");
+		ISkinObj* pLoadingSkin = GETSKIN(L"skin.richvideo_loading", 100);
+		if (pLoading && pLoadingSkin)
+		{
+			pLoading->SetSkin(pLoadingSkin);
+			pLoading->SetVisible(FALSE, TRUE);
+			pLoading->Resume();
+		}
+
+		std::wstring wstrVideoDuration;
+		std::string strVideoDuration;
+		wstrVideoDuration = _video_duration;
+		strVideoDuration = S_CW2A(wstrVideoDuration.c_str(), CP_UTF8);
+		int nVideoDuration = atoi(strVideoDuration.c_str());
+		SStringW sstrVideoDuration;
+
+		int nS = nVideoDuration%60;
+		int nM = nVideoDuration/60%60;
+		int nH = nVideoDuration / 3600;
+		if (nVideoDuration/3600 < 24)
+			sstrVideoDuration.Format(L"%02d:%02d", nM, nS);
+		else
+			sstrVideoDuration.Format(L"%02d:%02d:%02d", nH, nM, nS);
+
+		SStatic* pVideoDuration = _oleView.FindChildByName2<SStatic>(L"video_duration");
+		if (pVideoDuration)
+			pVideoDuration->SetWindowText(sstrVideoDuration);
+
+		return ret;
+	}
+
+	void RichEditVideoOle::SetVideoFrameImage(const SStringW& sstrImagePath)
+	{
+		_video_cover_path = sstrImagePath;
+		SWindow* pVideoWnd = _oleView.FindChildByName2<SWindow>(L"video_frame");
+		if (pVideoWnd)
+		{
+			SImageWnd* pVideoCoverWnd = pVideoWnd->FindChildByName2<SImageWnd>(L"video_cover_img");
+			IBitmap* pFrameImg = SResLoadFromFile::LoadImage(_video_cover_path);
+			if (pVideoCoverWnd && pFrameImg)
+			{
+				pVideoCoverWnd->SetImage(pFrameImg);
+				UpdateWindowLayout(pVideoCoverWnd);
+			}
+		}
+	}
+
+	bool RichEditVideoOle::OnBnClickPlay(SOUI::EventArgs* pEvt)
+	{
+		if (REVIDEO_STATE_DOWNFINISH != _state)
+		{
+			_state = REVIDEO_STATE_DOWNLOADING;
+			SWindow* pVideoWnd = _oleView.FindChildByName2<SWindow>(L"video_frame");
+			if (pVideoWnd)
+			{
+				SImageWnd* pVideoCoverWnd = pVideoWnd->FindChildByName2<SImageWnd>(L"video_cover_img");
+				IBitmap* pFrameImg = SResLoadFromFile::LoadImage(_video_cover_path);
+				if (pVideoCoverWnd && pFrameImg)
+				{
+					pVideoCoverWnd->SetImage(pFrameImg);
+					UpdateWindowLayout(pVideoCoverWnd);
+				}
+			}
+
+			SImageView* pPlay = _oleView.FindChildByName2<SImageView>(L"play");
+			ISkinObj* pPlaySkin = GETSKIN(L"skin.richvideo_play", 100);
+			if (pPlay && pPlaySkin)
+			{
+				pPlay->SetSkin(pPlaySkin);
+				pPlay->SetVisible(FALSE, TRUE);
+				pPlay->Resume();
+			}
+
+			SImageView* pLoading = _oleView.FindChildByName2<SImageView>(L"loading");
+			ISkinObj* pLoadingSkin = GETSKIN(L"skin.richvideo_loading", 100);
+			if (pLoading && pLoadingSkin)
+			{
+				pLoading->SetSkin(pLoadingSkin);
+				pLoading->SetVisible(TRUE, TRUE);
+				pLoading->Resume();
+			}
+
+			std::wstring wstrVideoDuration;
+			std::string strVideoDuration;
+			wstrVideoDuration = _video_duration;
+			strVideoDuration = S_CW2A(wstrVideoDuration.c_str(), CP_UTF8);
+			int nVideoDuration = atoi(strVideoDuration.c_str());
+			SStringW sstrVideoDuration;
+
+			int nS = nVideoDuration%60;
+			int nM = nVideoDuration/60%60;
+			int nH = nVideoDuration / 3600;
+			if (nVideoDuration/3600 < 24)
+				sstrVideoDuration.Format(L"%02d:%02d", nM, nS);
+			else
+				sstrVideoDuration.Format(L"%02d:%02d:%02d", nH, nM, nS);
+
+			SStatic* pVideoDuration = _oleView.FindChildByName2<SStatic>(L"video_duration");
+			if (pVideoDuration)
+				pVideoDuration->SetWindowText(sstrVideoDuration);
+
+			_pObjHost->NotifyRichObjEvent(this, CLICK_VIDEODOWNLOAD, 0, 0);
+		}
+		else
+			_pObjHost->NotifyRichObjEvent(this, CLICK_VIDEOPLAY, 0, 0);
+		return true;
+	}
+
+	void RichEditVideoOle::SetVideoPlayState(int nstate)
+	{
+		if (REVIDEO_STATE_DOWNFINISH == nstate)
+		{
+			_state = REVIDEO_STATE_DOWNFINISH;
+			SWindow* pVideoWnd = _oleView.FindChildByName2<SWindow>(L"video_frame");
+			if (pVideoWnd)
+			{
+				SImageWnd* pVideoCoverWnd = pVideoWnd->FindChildByName2<SImageWnd>(L"video_cover_img");
+				IBitmap* pFrameImg = SResLoadFromFile::LoadImage(_video_cover_path);
+				if (pVideoCoverWnd && pFrameImg)
+				{
+					pVideoCoverWnd->SetImage(pFrameImg);
+					UpdateWindowLayout(pVideoCoverWnd);
+				}
+			}
+
+			SImageView* pPlay = _oleView.FindChildByName2<SImageView>(L"play");
+			ISkinObj* pPlaySkin = GETSKIN(L"skin.richvideo_play", 100);
+			if (pPlay && pPlaySkin)
+			{
+				pPlay->SetSkin(pPlaySkin);
+				pPlay->SetVisible(TRUE, TRUE);
+				pPlay->Resume();
+			}
+
+			SImageView* pLoading = _oleView.FindChildByName2<SImageView>(L"loading");
+			ISkinObj* pLoadingSkin = GETSKIN(L"skin.richvideo_loading", 100);
+			if (pLoading && pLoadingSkin)
+			{
+				pLoading->SetSkin(pLoadingSkin);
+				pLoading->SetVisible(FALSE, TRUE);
+				pLoading->Resume();
+			}
+
+			std::wstring wstrVideoDuration;
+			std::string strVideoDuration;
+			wstrVideoDuration = _video_duration;
+			strVideoDuration = S_CW2A(wstrVideoDuration.c_str(), CP_UTF8);
+			int nVideoDuration = atoi(strVideoDuration.c_str());
+			SStringW sstrVideoDuration;
+
+			int nS = nVideoDuration%60;
+			int nM = nVideoDuration/60%60;
+			int nH = nVideoDuration / 3600;
+			if (nVideoDuration/3600 < 24)
+				sstrVideoDuration.Format(L"%02d:%02d", nM, nS);
+			else
+				sstrVideoDuration.Format(L"%02d:%02d:%02d", nH, nM, nS);
+
+			SStatic* pVideoDuration = _oleView.FindChildByName2<SStatic>(L"video_duration");
+			if (pVideoDuration)
+				pVideoDuration->SetWindowText(sstrVideoDuration);
+		}
+	}
+
+	void RichEditVideoOle::UpdatePosition()
+	{
+		if (_spAdviseSink)
+		{
+			std::string strWidth, strHeight;
+			std::wstring wstrWidth, wstrHeight;
+			wstrWidth = _video_cover_width;
+			wstrHeight = _video_cover_height;
+
+			strWidth = S_CW2A(wstrWidth.c_str(), CP_UTF8);
+			strHeight = S_CW2A(wstrHeight.c_str(), CP_UTF8);
+
+			SIZE tempSize;
+			tempSize.cx = atoi(strWidth.c_str());
+			tempSize.cy = atoi(strHeight.c_str());
+
+			double fRatio = GetZoomRatio(tempSize, _sizeNatural);
+			tempSize.cx = LONG((double)tempSize.cx * fRatio);
+			tempSize.cy = LONG((double)tempSize.cy * fRatio);
+			_oleView.SetOleWindowRect(CRect(0, 0, 0, 0)); // “—æ≠ ß–ß
+			_oleView.Move(0, 0, tempSize.cx, tempSize.cy);
+			CalculateExtentSize(tempSize);
+			_spAdviseSink->OnViewChange(DVASPECT_CONTENT, -1);
+		}
+	}
 } // namespace SOUI

@@ -83,7 +83,8 @@ namespace SOUI
 
     MenuWrapper::MenuWrapper(const SStringW& xml, const SStringW& type)
     {
-        LOADXML(_menuDoc, xml, type);
+		SStringW strRes=xml + L":" + type;
+        LOADXML(_menuDoc, strRes);
         _menuRoot = _menuDoc.child(L"menuRoot");
     }
 

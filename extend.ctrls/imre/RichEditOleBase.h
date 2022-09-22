@@ -1,15 +1,15 @@
-ï»¿
+
 // ------------------------------------------------------------------------------
 //
 // RichEditOleBase.h : interface of the RichEditOleBase class
 //
-// å®šä¹‰äº†RichEdit OLEæ§ä»¶çš„åŸºç±»ã€‚OLEæ§ä»¶æŒæœ‰OleWindowå¯¹è±¡ï¼Œä»è€Œå…·æœ‰SWindow
-// çš„èƒ½åŠ›ï¼Œå¦‚å¯ä½¿ç”¨XMLæ–‡ä»¶å®šä¹‰å¤–è§‚ï¼Œå¯ä»¥å“åº”é¼ æ ‡/é”®ç›˜è¿›è¡Œæ“ä½œç­‰ã€‚
+// ¶¨ÒåÁËRichEdit OLE¿Ø¼şµÄ»ùÀà¡£OLE¿Ø¼ş³ÖÓĞOleWindow¶ÔÏó£¬´Ó¶ø¾ßÓĞSWindow
+// µÄÄÜÁ¦£¬Èç¿ÉÊ¹ÓÃXMLÎÄ¼ş¶¨ÒåÍâ¹Û£¬¿ÉÒÔÏìÓ¦Êó±ê/¼üÅÌ½øĞĞ²Ù×÷µÈ¡£
 //
-// OLEæ§ä»¶ä¸»è¦ç”±ä»¥ä¸‹3ä¸ªéƒ¨åˆ†ç»„æˆï¼š
-// - OleWindow      : è´Ÿè´£OLEæ§ä»¶çš„å¤–è§‚,äº¤äº’
-// - OleTimerHandler: OLEæ§ä»¶ä½¿ç”¨çš„å®šæ—¶å™¨ï¼Œä¸ºäº†å¤§é‡GIFè€Œä¼˜åŒ–çš„å®šæ—¶å™¨
-// - RichEditOleBase: è´Ÿè´£å’ŒRichEditäº¤äº’
+// OLE¿Ø¼şÖ÷ÒªÓÉÒÔÏÂ3¸ö²¿·Ö×é³É£º
+// - OleWindow      : ¸ºÔğOLE¿Ø¼şµÄÍâ¹Û,½»»¥
+// - OleTimerHandler: OLE¿Ø¼şÊ¹ÓÃµÄ¶¨Ê±Æ÷£¬ÎªÁË´óÁ¿GIF¶øÓÅ»¯µÄ¶¨Ê±Æ÷
+// - RichEditOleBase: ¸ºÔğºÍRichEdit½»»¥
 //
 // ------------------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ namespace SOUI
         void OnNextFrame()
         {
             /*
-             * å¦‚æœæœ‰å¤§é‡çš„å®šæ—¶å™¨æ³¨å†Œä¸Šæ¥,æ¯æ¬¡éƒ½è¦æ‹·è´,å¾ˆè´¹CPU,ç‰¹æ„æŠŠä»¥ä¸‹ä¸¤å¥å»æ‰
-             * æ³¨æ„åœ¨OnNextFrameé‡Œé¢ä¸èƒ½æ³¨å†Œå’Œå–æ¶ˆå®šæ—¶å™¨,å¦åˆ™å¾ªç¯ä¼šå‡ºé”™
+             * Èç¹ûÓĞ´óÁ¿µÄ¶¨Ê±Æ÷×¢²áÉÏÀ´,Ã¿´Î¶¼Òª¿½±´,ºÜ·ÑCPU,ÌØÒâ°ÑÒÔÏÂÁ½¾äÈ¥µô
+             * ×¢ÒâÔÚOnNextFrameÀïÃæ²»ÄÜ×¢²áºÍÈ¡Ïû¶¨Ê±Æ÷,·ñÔòÑ­»·»á³ö´í
              */
              //SList<ITimelineHandler*> lstCopy;
              //CopyList(m_lstHandler,lstCopy);
@@ -80,12 +80,11 @@ namespace SOUI
         // ISwndContainer methods
         //
         BOOL            OnFireEvent(EventArgs &evt);
-        CRect           GetContainerRect();
+        CRect           GetContainerRect() const;
         HWND            GetHostHwnd();
-		virtual const SStringW & GetTranslatorContext() const;
-        const SStringW& GetTranslatorContext();
-        IRenderTarget*  OnGetRenderTarget(const CRect & rc, DWORD gdcFlags);
-        void            OnReleaseRenderTarget(IRenderTarget * pRT, const CRect &rc, DWORD gdcFlags);
+		const SStringW& GetTranslatorContext()const;
+        IRenderTarget*  OnGetRenderTarget(const CRect & rc, GrtFlag gdcFlags);
+        void            OnReleaseRenderTarget(IRenderTarget * pRT, const CRect &rc, GrtFlag gdcFlags);
         void            OnRedraw(const CRect &rc);
         BOOL            IsTranslucent() const;
         BOOL            IsSendWheel2Hover() const;
@@ -99,6 +98,8 @@ namespace SOUI
         SMessageLoop *  GetMsgLoop();
         IScriptModule * GetScriptModule() { return NULL; }
         int             GetScale() const { return 100; }
+		void EnableIME(BOOL bEnable) {}
+		void OnUpdateCursor() {}
 
         //
         // internal public methods
@@ -116,12 +117,13 @@ namespace SOUI
         IRichEditObjHost *      m_pHostRichEdit;
         int                     m_nWindowID;
 
-        CRect                   m_rcOleWindow;      // oleåœ¨richedité‡Œé¢çš„ä½ç½®   
-        BOOL                    m_bDelayDraw;       // å¯¹äºGIFï¼Œéœ€è¦è®¾ç½®å»¶è¿Ÿåˆ·æ–°
+        CRect                   m_rcOleWindow;      // oleÔÚricheditÀïÃæµÄÎ»ÖÃ   
+        BOOL                    m_bDelayDraw;       // ¶ÔÓÚGIF£¬ĞèÒªÉèÖÃÑÓ³ÙË¢ĞÂ
 
-        static OleTimerHandler  m_timerHandler;     // å®šæ—¶å™¨
+        static OleTimerHandler  m_timerHandler;     // ¶¨Ê±Æ÷
         static BOOL             m_bTiemrRegistered;
-    };
+
+	};
 
     class RichEditOleBase : public RichEditObj
         , public IOleObject
@@ -159,7 +161,7 @@ namespace SOUI
         HRESULT STDMETHODCALLTYPE GetMiscStatus(DWORD, DWORD *pdwStatus) { return E_NOTIMPL; }
         HRESULT STDMETHODCALLTYPE SetColorScheme(LOGPALETTE *pLogpal) { return E_NOTIMPL; }
 
-        //ä»¥ä¸‹æ¥å£éœ€è¦å®ç°
+        //ÒÔÏÂ½Ó¿ÚĞèÒªÊµÏÖ
         HRESULT STDMETHODCALLTYPE GetUserClassID(CLSID *pClsid);
         HRESULT STDMETHODCALLTYPE Advise(IAdviseSink *pAdvSink, DWORD *pdwConnection);
         HRESULT STDMETHODCALLTYPE Unadvise(DWORD dwConnection);
@@ -178,7 +180,7 @@ namespace SOUI
         HRESULT STDMETHODCALLTYPE Freeze(DWORD, LONG, void *, DWORD *) { return S_OK; }
         HRESULT STDMETHODCALLTYPE Unfreeze(DWORD dwFreeze) { return S_OK; }
 
-        // ä»¥ä¸‹æ¥å£éœ€è¦å®ç°
+        // ÒÔÏÂ½Ó¿ÚĞèÒªÊµÏÖ
         HRESULT STDMETHODCALLTYPE SetAdvise(DWORD aspects, DWORD advf, IAdviseSink *pAdvSink);
         HRESULT STDMETHODCALLTYPE GetAdvise(DWORD *pAspects, DWORD *pAdvf, IAdviseSink **ppAdvSink);
         HRESULT STDMETHODCALLTYPE Draw(
@@ -217,14 +219,14 @@ namespace SOUI
         virtual void    RequestDraw();
 
     protected:
-
+		virtual	void	UpdateScale(int nScale);
         void            UpdateWindowLayout(SWindow* pWindow);
         HRESULT         InsertOleObject(IRichEditObjHost*);
         void            InvertBorder(HDC hdc, LPRECT lprcBorder);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"selectable", _canBeSelect, FALSE)
-            SOUI_ATTRS_END()
+        SOUI_ATTRS_END()
 
     protected:
 

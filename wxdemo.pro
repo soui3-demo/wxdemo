@@ -4,13 +4,13 @@
 TEMPLATE = app
 TARGET = wxdemo
 
-include($$(SOUIPATH)/demo_com.pri)
+include($$(SOUI3PATH)/demo_com.pri)
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib souid.lib
+	LIBS += utilitiesd.lib soui3d.lib
 }
 else{
-	LIBS += utilities.lib soui.lib
+	LIBS += utilities.lib soui3.lib
 }
 
 

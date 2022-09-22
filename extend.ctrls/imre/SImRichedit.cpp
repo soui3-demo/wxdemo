@@ -3,15 +3,15 @@
 #include "SImRichedit.h"
 #include "TOM.h"
 #include <atlcomcli.h>
-#include "interface\render-i.h"
+#include "interface\srender-i.h"
 #include "RichEditOleCallback.h"
 #include "atl.mini\SComHelper.h"
 #include <time.h>
-#include "../../utils.h"
+#include "utils.h"
 #include "RichEditOleCtrls.h"
 #include "helper\SMenuEx.h"
 #include "gdialpha.h"
-#include "../../extend.events/ExtendEvents.h"
+#include "ExtendEvents.h"
 #include "ClipboardConverter.h"
 
 #ifndef LY_PER_INCH
@@ -143,9 +143,9 @@ namespace SOUI
         RichEditDropTarget(IRichEditObjHost *phost)
             :_ref(1)
             , _pHost(phost)
-        {
-            SASSERT(_pserv);
-            _pserv = phost->GetTextServ();
+        {           
+			SASSERT(_pHost);
+            _pserv = phost->GetTextServ();			
             _pserv->AddRef();
         }
 
@@ -402,13 +402,13 @@ namespace SOUI
         * 方法2画背景
         */
         int n = GetTickCount();
-        CAutoRefPtr<IRenderTarget> pRT = GetContainer()->OnGetRenderTarget(rcClient, 0);
+        CAutoRefPtr<IRenderTarget> pRT = GetContainer()->OnGetRenderTarget(rcClient, GRT_NODRAW);
         pRT->BitBlt(rcClient, _pBackgroundRt, rcClient.left, rcClient.top);
         int n1 = GetTickCount() - n;
 
         n = GetTickCount();
         RedrawRegion(pRT, rgn);
-        GetContainer()->OnReleaseRenderTarget(pRT, rcClient, 0);
+        GetContainer()->OnReleaseRenderTarget(pRT, rcClient,GRT_NODRAW);
         int n2 = GetTickCount() - n;
 
         //STRACE(L"direct draw:%d, n1:%d, n2:%d", GetTickCount(), n1, n2);
@@ -663,8 +663,7 @@ namespace SOUI
 
     BOOL SImRichEdit::IsScrollAtTop()
     {
-        CRect rcTrack = GetSbPartRect(TRUE, SB_THUMBTRACK);
-        return rcTrack.top == 0;
+		return m_siVer.nPos == 0;
     }
 
     BOOL SImRichEdit::IsScrollAtBottom()
@@ -885,14 +884,14 @@ namespace SOUI
         CRect rcRegion;
         prgn->GetRgnBox(rcRegion);
 
-        CAutoRefPtr<IRenderTarget> pRt = GetContainer()->OnGetRenderTarget(rcRegion, 0);
+        CAutoRefPtr<IRenderTarget> pRt = GetContainer()->OnGetRenderTarget(rcRegion, GRT_NODRAW);
         pRt->PushClipRegion(prgn);
         pRt->BitBlt(rcRegion, _pBackgroundRt, rcRegion.left, rcRegion.top);
 
         DrawVisibleContents(pRt);
         DrawVisibleGifs(pRt, rcRegion);
 
-        GetContainer()->OnReleaseRenderTarget(pRt, rcRegion, 0);
+        GetContainer()->OnReleaseRenderTarget(pRt, rcRegion, GRT_NODRAW);
         pRt->PopClip();
     }
 
@@ -990,9 +989,18 @@ namespace SOUI
     {
         _caretRect.left = x;
         _caretRect.top = y;
-        return SetCaretPos(x, y);
+        return SRichEdit::SetCaretPos(x, y);
     }
 
+	void SImRichEdit::OnScaleChanged(int nScale)
+	{
+		__super::OnScaleChanged(nScale);
+
+		for (size_t n = 0; n < _richContents.GetCount(); ++n)
+		{
+			_richContents.GetAt(n)->UpdateScale(nScale);
+		}
+	}
     BOOL SImRichEdit::CanPaste()
     {
         RichFormatConv::ClipboardFmts fmts;
@@ -1514,26 +1522,14 @@ namespace SOUI
 
     void SImRichEdit::DrawScrollbar(BOOL bVertical, UINT uCode, int nPos)
     {
-        SCROLLINFO *psi = bVertical ? (&m_siVer) : (&m_siHoz);
-
         if (uCode != SB_THUMBTRACK && IsVisible(TRUE))
         {
-            CRect rcRail = GetScrollBarRect(bVertical);
-            if (bVertical)
-            {
-                rcRail.DeflateRect(0, GetSbArrowSize());
-            }
-            else
-            {
-                rcRail.DeflateRect(GetSbArrowSize(), 0);
-            }
-
-            CAutoRefPtr<IRenderTarget> pRT = GetRenderTarget(&rcRail, OLEDC_PAINTBKGND, FALSE);
-            m_pSkinSb->Draw(pRT, rcRail, MAKESBSTATE(SB_PAGEDOWN, SBST_NORMAL, bVertical));
-            psi->nTrackPos = -1;
-            CRect rcSlide = GetSbPartRect(bVertical, SB_THUMBTRACK);
-            m_pSkinSb->Draw(pRT, rcSlide, MAKESBSTATE(SB_THUMBTRACK, SBST_NORMAL, bVertical));
-            ReleaseRenderTarget(pRT);
+			SScrollBarHandler *pSbHandler = bVertical ? &m_sbVert : &m_sbHorz;
+			CRect rcRail = pSbHandler->GetPartRect(SScrollBarHandler::kSbRail);
+			IRenderTarget* pRT = GetRenderTarget(&rcRail, GRT_PAINTBKGND, FALSE);
+			pSbHandler->OnDraw(pRT, SScrollBarHandler::kSbRail);
+			pSbHandler->OnDraw(pRT, SB_THUMBTRACK);
+			ReleaseRenderTarget(pRT);
         }
     }
 
@@ -1850,16 +1846,16 @@ namespace SOUI
         // Convert Device Pixels to Himetric
 #define DTOHIMETRIC(d, dpi) (LONG)MulDiv(d, HIMETRIC_PER_INCH, dpi)
 
-		CRect rcInsetPixel = GetStyle().GetPadding();
+		CRect rcPadding = GetStyle().GetPadding();
 
         if (HasScrollBar(TRUE))
         {
-            rcInsetPixel.right -= GetScrollBarRect(TRUE).Width();
+            rcPadding.right -= GetScrollBarRect(TRUE).Width();
         }
 
         if (HasScrollBar(FALSE))
         {
-            rcInsetPixel.bottom -= GetScrollBarRect(FALSE).Height();
+            rcPadding.bottom -= GetScrollBarRect(FALSE).Height();
         }
 
         //
@@ -1872,6 +1868,12 @@ namespace SOUI
 
         SPanel::OnNcCalcSize(bCalcValidRects, lParam);
 
+        CRect rcInsetPixel = GetStyle().GetPadding();
+        if (!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
+        {
+            rcInsetPixel.top = rcInsetPixel.bottom = (m_rcClient.Height() - m_nFontHeight) / 2;
+        }
+
         m_siHoz.nPage = m_rcClient.Width() - rcInsetPixel.left - rcInsetPixel.right;
         m_siVer.nPage = m_rcClient.Height() - rcInsetPixel.top - rcInsetPixel.bottom;
 
@@ -1883,11 +1885,11 @@ namespace SOUI
         m_sizelExtent.cx = DTOHIMETRIC(m_rcClient.Width(), xPerInch);
         m_sizelExtent.cy = DTOHIMETRIC(m_rcClient.Height(), yPerInch);
 
-        m_rcInset.left = DTOHIMETRIC(rcInsetPixel.left, xPerInch);
-        m_rcInset.right = DTOHIMETRIC(rcInsetPixel.right, xPerInch);
-        m_rcInset.top = DTOHIMETRIC(rcInsetPixel.top, yPerInch);
-        m_rcInset.bottom = DTOHIMETRIC(rcInsetPixel.bottom, yPerInch);
-
+        m_rcInset.left = DTOHIMETRIC(rcPadding.left, xPerInch);
+        m_rcInset.right = DTOHIMETRIC(rcPadding.right, xPerInch);
+        m_rcInset.top = DTOHIMETRIC(rcPadding.top, yPerInch);
+        m_rcInset.bottom = DTOHIMETRIC(rcPadding.bottom, yPerInch);
+		
         return 0;
     }
 
@@ -2109,7 +2111,7 @@ namespace SOUI
         }
 
         OnScroll(TRUE, SB_THUMBTRACK, nFinalPos);
-        DrawScrollbar(TRUE, SB_THUMBPOSITION, nFinalPos);
+        //DrawScrollbar(TRUE, SB_THUMBPOSITION, nFinalPos);
 
         return FALSE;
     }
